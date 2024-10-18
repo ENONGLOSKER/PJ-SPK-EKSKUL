@@ -11,25 +11,8 @@
         </button>
 
         <div class="">
-            <h1 class="h3 mb-0 text-gray-800 font-weight-bold">SISWA</h1>
+            <h1 class="h3 mb-0 text-gray-800 font-weight-bold">SUB KRITERIA</h1>
         </div>
-
-        <!-- sweet alert -->
-        <!-- {%for message in messages%}
-        {% if message.tags == 'success' %}                     
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>                                            
-        <script>
-            var m="{{message}}";
-            swal("Login",m,"success");
-        </script>
-        {%else%}
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>                                            
-        <script>
-            var m="{{message}}";
-            swal("Login",m,"danger");
-        </script>
-        {% endif %}
-        {%endfor%} -->
 
         <!-- Topbar Navbar -->
         <ul class="navbar-nav ml-auto">
@@ -97,7 +80,7 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800" ><h1>
                 
-                <a href="{% url 'add_kriteria' %}"  class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                <a href="{% url 'subkriteria_create' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     class="fas fa-plus fa-sm text-white-50"></i>  Add Data
                 </a>  
         </div>
@@ -109,7 +92,7 @@
                     <!-- Card Header - Dropdown -->
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Siswa</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Data Sub Kriteria - {{kriteria}}</h6>
                         </div>
                         <div class="card-body table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -131,17 +114,21 @@
                                                 <span class="badge bg-primary text-white" style="padding: 4px 10px">{{data.nilai}}</span>
                                             </td>
                                             <td class="text-center" >
-                                                <a href="{% url 'update_kriteria' id=data.id %}" class="btn btn-warning btn-icon-split mb-1 ">
+                                                <a href="{% url 'subkriteria_update' id=data.id %}" class="btn btn-warning btn-icon-split mb-1 ">
                                                     <span class="icon text-white-25">
                                                         <i class="fas fa-edit"></i>
                                                     </span>                                                                
                                                 </a>
                                                 
-                                                <a href="{% url 'delet_kriteria' id=data.id %}" class="btn btn-danger btn-icon-split mb-1" onclick="return confirm('yakin ingin menghapus data?')">
-                                                    <span class="icon text-white-25">
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>                                                                
-                                                </a>
+                                                <form action="{% url 'subkriteria_delete' id=data.id %}" method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger btn-icon-split mb-1"
+                                                        onclick="return confirm('yakin ingin menghapus data?')">
+                                                        <span class="icon text-white-25">
+                                                            <i class="fas fa-trash"></i>
+                                                        </span>
+                                                    </button>
+                                                    </form>
                                             </td>
                                         
                                         </tr> 

@@ -35,21 +35,21 @@ urlpatterns = [
     path('dashboard/kriteria/delet/<int:id>/', views.delet_kriteria, name='delet_kriteria'),
 
     # SubKriteria URLs
-    path('subkriteria/', views.subkriteria_list, name='subkriteria_list'),
+    path('subkriteria/<int:id>/', views.subkriteria_list, name='subkriteria_list'),
     path('subkriteria/create/', views.subkriteria_create, name='subkriteria_create'),
-    path('subkriteria/update/<int:pk>/', views.subkriteria_update, name='subkriteria_update'),
-    path('subkriteria/delete/<int:pk>/', views.subkriteria_delete, name='subkriteria_delete'),
+    path('subkriteria/update/<int:id>/', views.subkriteria_update, name='subkriteria_update'),
+    path('subkriteria/delete/<int:id>/', views.subkriteria_delete, name='subkriteria_delete'),
 
     path('ekskul/', views.ekskul_list, name='ekskul_list'),
     path('ekskul/create/', views.ekskul_create, name='ekskul_create'),
-    path('ekskul/update/<int:pk>/', views.ekskul_update, name='ekskul_update'),
-    path('ekskul/delete/<int:pk>/', views.ekskul_delete, name='ekskul_delete'),
+    path('ekskul/update/<int:id>/', views.ekskul_update, name='ekskul_update'),
+    path('ekskul/delete/<int:id>/', views.ekskul_delete, name='ekskul_delete'),
 
     # Penilaian URLs
     path('penilaian/', views.penilaian_list, name='penilaian_list'),
     path('penilaian/create/', views.penilaian_create, name='penilaian_create'),
-    path('penilaian/update/<int:pk>/', views.penilaian_update, name='penilaian_update'),
-    path('penilaian/delete/<int:pk>/', views.penilaian_delete, name='penilaian_delete'),
+    path('penilaian/update/<int:id>/', views.penilaian_update, name='penilaian_update'),
+    path('penilaian/delete/<int:id>/', views.penilaian_delete, name='penilaian_delete'),
     
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

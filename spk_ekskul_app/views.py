@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Alternatif, Kriteria, SubKriteria , Ekskul, Penilaian
 from .forms import AlternatifForm, KriteriaForm, EkskulForm, PenilaianForm, SubKriteriaForm
-import math
+from django.http import HttpResponse
+from django.urls import reverse
 # Create your views here.
 
 def index(request):
@@ -100,40 +101,48 @@ def delet_kriteria(request,id):
     return redirect('dsb_kriteria')
 
 
-def subkriteria_list(request):
-    subkriterias = SubKriteria.objects.all()
-    return render(request, 'dashboard_sub_kriteria.html', {'subkriterias': subkriterias})
+def subkriteria_list(request, id):
+    kriteria = Kriteria.objects.get(id=id)
+    subkriterias = SubKriteria.objects.filter(kriteria=kriteria)
+    context = {
+        'kriteria': kriteria,
+        'subkriterias': subkriterias
+    }
+    return render(request, 'dashboard_sub_kriteria.html', context)
 
 def subkriteria_create(request):
     if request.method == 'POST':
         form = SubKriteriaForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('subkriteria_list')
+            subkriteria = form.save()
+            return redirect('subkriteria_list', id=subkriteria.kriteria.id)
     else:
         form = SubKriteriaForm()
     return render(request, 'dashboard_form.html', {'form': form})
 
-def subkriteria_update(request, pk):
-    subkriteria = get_object_or_404(SubKriteria, pk=pk)
+def subkriteria_update(request, id):
+    subkriteria = get_object_or_404(SubKriteria, id=id)
     if request.method == 'POST':
         form = SubKriteriaForm(request.POST, instance=subkriteria)
         if form.is_valid():
-            form.save()
-            return redirect('subkriteria_list')
+            subkriteria = form.save()
+            return redirect('subkriteria_list', id=subkriteria.kriteria.id)
     else:
         form = SubKriteriaForm(instance=subkriteria)
     return render(request, 'dashboard_form.html', {'form': form})
 
-def subkriteria_delete(request, pk):
-    subkriteria = get_object_or_404(SubKriteria, pk=pk)
+def subkriteria_delete(request, id):
+    subkriteria = get_object_or_404(SubKriteria, id=id)
+    kriteria_id = subkriteria.kriteria.id
     if request.method == 'POST':
         subkriteria.delete()
-        return redirect('subkriteria_list')
-
+        return redirect('subkriteria_list', id=kriteria_id)
+    else:
+        # Jika request bukan POST, render halaman konfirmasi atau handle lainnya
+        return HttpResponse("Invalid request method. Please delete using POST request.")
 def ekskul_list(request):
     ekskuls = Ekskul.objects.all()
-    return render(request, 'ekskul_list.html', {'ekskuls': ekskuls})
+    return render(request, 'dashboard_ekskul.html', {'ekskuls': ekskuls})
 
 def ekskul_create(request):
     if request.method == 'POST':
@@ -143,10 +152,10 @@ def ekskul_create(request):
             return redirect('ekskul_list')
     else:
         form = EkskulForm()
-    return render(request, 'ekskul_form.html', {'form': form})
+    return render(request, 'dashboard_form.html', {'form': form})
 
-def ekskul_update(request, pk):
-    ekskul = get_object_or_404(Ekskul, pk=pk)
+def ekskul_update(request, id):
+    ekskul = get_object_or_404(Ekskul, id=id)
     if request.method == 'POST':
         form = EkskulForm(request.POST, instance=ekskul)
         if form.is_valid():
@@ -154,14 +163,12 @@ def ekskul_update(request, pk):
             return redirect('ekskul_list')
     else:
         form = EkskulForm(instance=ekskul)
-    return render(request, 'ekskul_form.html', {'form': form})
+    return render(request, 'dashboard_form.html', {'form': form})
 
-def ekskul_delete(request, pk):
-    ekskul = get_object_or_404(Ekskul, pk=pk)
-    if request.method == 'POST':
-        ekskul.delete()
-        return redirect('ekskul_list')
-    return render(request, 'ekskul_confirm_delete.html', {'ekskul': ekskul})
+def ekskul_delete(request, id):
+    ekskul = get_object_or_404(Ekskul, id=id)
+    ekskul.delete()
+    return redirect('ekskul_list')
 
 # PENILAIAN CRUD
 def penilaian_list(request):

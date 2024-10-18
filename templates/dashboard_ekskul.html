@@ -4,7 +4,7 @@
 <div id="content">
     <!-- Topbar -->
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-        
+
         <!-- Sidebar Toggle (Topbar) -->
         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
@@ -36,8 +36,8 @@
 
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
             <li class="nav-item dropdown no-arrow d-sm-none">
-                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search fa-fw"></i>
                 </a>
                 <!-- Dropdown - Messages -->
@@ -45,9 +45,8 @@
                     aria-labelledby="searchDropdown">
                     <form class="form-inline mr-auto w-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small"
-                                placeholder="Search for..." aria-label="Search"
-                                aria-describedby="basic-addon2">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
@@ -60,22 +59,21 @@
 
             <div class="topbar-divider d-none d-sm-block"></div>
             <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">    
-                <a class="nav-link dropdown-toggle" href="" id="userDropdown" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="text-transform: capitalize;"></span>
-                    <img class="img-profile rounded-circle"
-                        src="{%static 'img/icon.png'%}">
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="" id="userDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"
+                        style="text-transform: capitalize;"></span>
+                    <img class="img-profile rounded-circle" src="{%static 'img/icon.png'%}">
                 </a>
                 <!-- Dropdown - User Information -->
                 <a class="scroll-to-top rounded" href="#page-top">
                     <i class="fas fa-angle-up"></i>
                 </a>
-                
 
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                    aria-labelledby="userDropdown">
-                  
+
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
                     <div class="dropdown-divider"></div>
                     <a href="" onclick="return confirm('Apakah Anda yakin ingin keluar?')">
                         {% csrf_token %}
@@ -95,11 +93,13 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800" ><h1>
-                
-                <a href="{% url 'add_kriteria' %}"  class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-plus fa-sm text-white-50"></i>  Add Data
-                </a>  
+            <h1 class="h3 mb-0 text-gray-800">
+                <h1>
+
+                    <a href="{% url 'ekskul_create' %}"
+                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-plus fa-sm text-white-50"></i> Add Data
+                    </a>
         </div>
 
         <div class="row">
@@ -112,46 +112,46 @@
                             <h6 class="m-0 font-weight-bold text-primary">Data Siswa</h6>
                         </div>
                         <div class="card-body table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead class="text-center">
-                                        <tr>
-                                            <th>NO</th>
-                                            <th>NAMA</th>                                            
-                                            <th>SIMBOL</th>
-                                            <th>JENIS</th>
-                                            <th>ACTION</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>  
-                                                                                                                                                                                                  
-                                    {%for data in datas%}                                                
-                                        <tr style="text-transform: capitalize;">
-                                            <td class="text-center">{{forloop.counter}}</td>
-                                            <td>{{data.simbol}}</td>
-                                            <td><a href="{% url 'subkriteria_list' id=data.id %}">{{data.nama}}</a></td>
-                                            <td class="text-center">
-                                                <span class="badge bg-primary text-white" style="padding: 4px 10px">{{data.jenis}}</span>
-                                            </td>
-                                            <td class="text-center" >
-                                                <a href="{% url 'update_kriteria' id=data.id %}" class="btn btn-warning btn-icon-split mb-1 ">
-                                                    <span class="icon text-white-25">
-                                                        <i class="fas fa-edit"></i>
-                                                    </span>                                                                
-                                                </a>
-                                                
-                                                <a href="{% url 'delet_kriteria' id=data.id %}" class="btn btn-danger btn-icon-split mb-1" onclick="return confirm('yakin ingin menghapus data?')">
-                                                    <span class="icon text-white-25">
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>                                                                
-                                                </a>
-                                            </td>
-                                        
-                                        </tr> 
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>NAMA</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {%for data in ekskuls%}
+                                    <tr style="text-transform: capitalize;">
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td class="text-center">
+                                            <span class="badge bg-primary text-white"
+                                                style="padding: 4px 10px">{{data.nama}}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{% url 'ekskul_update' id=data.id %}"
+                                                class="btn btn-warning btn-icon-split mb-1 ">
+                                                <span class="icon text-white-25">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+
+                                            <a href="{% url 'ekskul_delete' id=data.id %}"
+                                                class="btn btn-danger btn-icon-split mb-1"
+                                                onclick="return confirm('yakin ingin menghapus data?')">
+                                                <span class="icon text-white-25">
+                                                    <i class="fas fa-trash"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+
+                                    </tr>
                                     {%endfor%}
-                                    </tbody>
-                                </table>
-                                <!-- Pagination -->
-                                <!-- <div class="d-flex justify-content-center">
+                                </tbody>
+                            </table>
+                            <!-- Pagination -->
+                            <!-- <div class="d-flex justify-content-center">
                                     <ul class="pagination">
                                         {% if datas.has_previous %}
                                             <li class="page-item"><a class="page-link" href="?cari={{ request.GET.cari|default_if_none:'' }}&page={{ datas.previous_page_number }}">Previous</a></li>
@@ -175,7 +175,7 @@
                                     </ul>
                                 </div> -->
                         </div>
-                    </div>                               
+                    </div>
                 </div>
             </div>
         </div>
@@ -187,12 +187,12 @@
 {%endblock konten%}
 
 
-<!-- SCRIPT -->   
+<!-- SCRIPT -->
 {%block script%}
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const currencyElements = document.querySelectorAll('.currency');
-        currencyElements.forEach(function(element) {
+        currencyElements.forEach(function (element) {
             const amount = parseFloat(element.textContent);
             const formattedAmount = new Intl.NumberFormat('id-ID', {
                 style: 'currency',
