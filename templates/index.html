@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SPK WP - Weighted Product</title>
+</head>
+<body>
+    <h1>Ranking Alternatif Ekstrakurikuler</h1>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Alternatif</th>
+                <th>Nilai V</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alternatif, nilai in ranking %}
+            <tr>
+                <td>{{ alternatif }}</td>
+                <td>{{ nilai }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
