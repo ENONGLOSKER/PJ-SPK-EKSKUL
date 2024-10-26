@@ -34,4 +34,4 @@ class EkskulForm(forms.ModelForm):
 class PenilaianForm(forms.ModelForm):
     class Meta:
         model = Penilaian
-        fields = ['siswa', 'ekskul', 'kriteria', 'sub_kriteria', 'nilai']
+        fields = "__all__"

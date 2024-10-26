@@ -77,7 +77,7 @@
                     aria-labelledby="userDropdown">
                   
                     <div class="dropdown-divider"></div>
-                    <a href="" onclick="return confirm('Apakah Anda yakin ingin keluar?')">
+                    <a href="{% url 'signout_form' %}" onclick="return confirm('Apakah Anda yakin ingin keluar?')">
                         {% csrf_token %}
                         <button type="submit" class="dropdown-item">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

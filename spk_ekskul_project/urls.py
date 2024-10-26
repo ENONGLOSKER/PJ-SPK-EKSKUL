@@ -23,6 +23,8 @@ from spk_ekskul_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('auth/signin/', views.sigin_form, name='sigin_form'),
+    path('auth/signout/', views.signout_form, name='signout_form'),
     path('dashboard/siswa/', views.dashboard, name='dsb_siswa'),
     path('dashboard/alternatif/', views.alternatif, name='dsb_alternatif'),
     path('dashboard/alternatif/add/', views.add_alternatif, name='add_alternatif'),

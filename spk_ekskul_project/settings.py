@@ -138,3 +138,5 @@ MESSAGE_TAGS = {
     messages.SUCCESS : 'success',
     50: 'critical',
 }
+
+LOGIN_URL = 'sigin_form'
