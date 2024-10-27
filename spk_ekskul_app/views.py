@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Alternatif, Kriteria, SubKriteria , Ekskul, Penilaian
 from .forms import AlternatifForm, KriteriaForm, EkskulForm, PenilaianForm, SubKriteriaForm
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -222,7 +222,27 @@ def ekskul_delete(request, id):
 @login_required
 def penilaian_list(request):
     penilaians = Penilaian.objects.all()
-    return render(request, 'dashboard_penilaian.html', {'penilaians': penilaians})
+    kriteria_bobot = Kriteria.objects.values('nama', 'bobot','jenis')
+    jlh_bobot = sum(kriteria['bobot'] for kriteria in kriteria_bobot)
+    jlh_item_bobot = [{'nama': item['nama'], 'bobot': item['bobot'] / jlh_bobot, 'jenis': item['jenis']} for item in kriteria_bobot]
+    hasil_pangkat = [
+        {
+            'nama': item['nama'],
+            'jenis': item['jenis'],
+            'pangkat': item['bobot'] * (1 if item['jenis'] == 'benefit' else -1)
+        }
+        for item in jlh_item_bobot
+    ]
+
+    print('data hasil pangkat =', hasil_pangkat)
+    context = {
+        'penilaians': penilaians,
+        'bobot': kriteria_bobot,
+        'jlh_bobot': jlh_bobot,
+        'jlh_item_bobot': jlh_item_bobot,
+        'hasil_pangkat': hasil_pangkat
+    }
+    return render(request, 'dashboard_penilaian.html', context)
 
 @login_required
 def penilaian_create(request):
@@ -236,8 +256,8 @@ def penilaian_create(request):
     return render(request, 'dashboard_form.html', {'form': form})
 
 @login_required
-def penilaian_update(request, pk):
-    penilaian = get_object_or_404(Penilaian, pk=pk)
+def penilaian_update(request, id):
+    penilaian = get_object_or_404(Penilaian, id=id)
     if request.method == 'POST':
         form = PenilaianForm(request.POST, instance=penilaian)
         if form.is_valid():
@@ -245,12 +265,18 @@ def penilaian_update(request, pk):
             return redirect('penilaian_list')
     else:
         form = PenilaianForm(instance=penilaian)
-    return render(request, 'penilaian_form.html', {'form': form})
+    return render(request, 'dashboard_form.html', {'form': form})
 
 @login_required
-def penilaian_delete(request, pk):
-    penilaian = get_object_or_404(Penilaian, pk=pk)
+def penilaian_delete(request, id):
+    penilaian = get_object_or_404(Penilaian, id=id)
     if request.method == 'POST':
         penilaian.delete()
         return redirect('penilaian_list')
     return render(request, 'penilaian_confirm_delete.html', {'penilaian': penilaian})
+
+def get_subkriteria(request):
+    kriteria_id = request.GET.get('kriteria_id')
+    subkriteria = SubKriteria.objects.filter(kriteria_id=kriteria_id).values('id', 'nama')  # Ganti 'nama' dengan field yang sesuai
+
+    return JsonResponse(list(subkriteria), safe=False)

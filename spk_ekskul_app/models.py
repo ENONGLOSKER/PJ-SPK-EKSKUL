@@ -25,7 +25,7 @@ class SubKriteria(models.Model):
     nilai = models.DecimalField(max_digits=3, decimal_places=2)
 
     def __str__(self):
-        return f"{self.nama} (Nilai: {self.nilai})"
+        return f"{self.nilai}"
 
 class Ekskul(models.Model):
     nama = models.CharField(max_length=100)
@@ -35,9 +35,10 @@ class Ekskul(models.Model):
 
 
 class Penilaian(models.Model):
-    alternatif = models.ForeignKey(Alternatif, on_delete=models.CASCADE, related_name='penilaian')
-    kriteria = models.ForeignKey(Kriteria, on_delete=models.CASCADE, related_name='penilaian')
-    nilai = models.FloatField()  # Nilai penilaian untuk setiap kriteria
+    alternatif = models.ForeignKey(Alternatif, on_delete=models.CASCADE, related_name='penilaian_al')
+    ekskul = models.ForeignKey(Ekskul, on_delete=models.CASCADE, related_name='penilaian_ex')
+    kriteria = models.ForeignKey(Kriteria, on_delete=models.CASCADE, related_name='penilaian_kr')
+    nilai = models.ForeignKey(SubKriteria, on_delete=models.CASCADE, related_name='penilaian_nilai')
 
     def __str__(self):
         return f"{self.alternatif.nama} - {self.kriteria.nama} (Nilai: {self.nilai})"

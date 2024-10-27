@@ -13,7 +13,7 @@ class AlternatifForm(forms.ModelForm):
 class KriteriaForm(forms.ModelForm):
     class Meta:
         model = Kriteria
-        fields = ['simbol', 'nama','jenis']
+        fields = ['simbol', 'nama','bobot','jenis']
 
         widgets = {
             'simbol':forms.TextInput(attrs={'class':'form-control'}),
@@ -34,4 +34,16 @@ class EkskulForm(forms.ModelForm):
 class PenilaianForm(forms.ModelForm):
     class Meta:
         model = Penilaian
-        fields = "__all__"
+        fields = ['alternatif', 'ekskul', 'kriteria', 'nilai']
+        widgets = {
+            'alternatif': forms.Select(attrs={'class': 'form-control'}),
+            'ekskul': forms.Select(attrs={'class': 'form-control'}),
+            'kriteria': forms.Select(attrs={'class': 'form-control'}),
+            'nilai': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nilai'].queryset = SubKriteria.objects.all()  # Tampilkan semua subkriteria awalnya
+
+    

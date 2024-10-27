@@ -118,6 +118,7 @@
                                             <th>NO</th>
                                             <th>NAMA</th>                                            
                                             <th>SIMBOL</th>
+                                            <th>BOBOT</th>
                                             <th>JENIS</th>
                                             <th>ACTION</th>
                                         </tr>
@@ -129,6 +130,7 @@
                                             <td class="text-center">{{forloop.counter}}</td>
                                             <td>{{data.simbol}}</td>
                                             <td><a href="{% url 'subkriteria_list' id=data.id %}">{{data.nama}}</a></td>
+                                            <td>{{data.bobot}}</td>
                                             <td class="text-center">
                                                 <span class="badge bg-primary text-white" style="padding: 4px 10px">{{data.jenis}}</span>
                                             </td>

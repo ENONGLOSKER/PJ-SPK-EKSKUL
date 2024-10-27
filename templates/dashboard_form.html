@@ -125,4 +125,27 @@
     <!-- /.container-fluid -->
 
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_kriteria').change(function () {
+            var kriteriaId = $(this).val();
+            $.ajax({
+                url: "{% url 'get_subkriteria' %}",  // Ganti dengan URL yang sesuai
+                data: {
+                    'kriteria_id': kriteriaId
+                },
+                success: function (data) {
+                    $('#id_nilai').empty();  // Kosongkan opsi sebelumnya
+                    $.each(data, function (index, subkriteria) {
+                        $('#id_nilai').append(
+                            $('<option></option>').val(subkriteria.id).html(subkriteria.nama)
+                        );
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 {%endblock konten%}

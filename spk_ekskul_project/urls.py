@@ -52,7 +52,7 @@ urlpatterns = [
     path('penilaian/create/', views.penilaian_create, name='penilaian_create'),
     path('penilaian/update/<int:id>/', views.penilaian_update, name='penilaian_update'),
     path('penilaian/delete/<int:id>/', views.penilaian_delete, name='penilaian_delete'),
-    
+    path('get-subkriteria/',  views.get_subkriteria, name='get_subkriteria'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
