@@ -11,7 +11,7 @@
         </button>
 
         <div class="">
-            <h1 class="h3 mb-0 text-gray-800 font-weight-bold">PENILAIAN</h1>
+            <h1 class="h3 mb-0 text-gray-800 font-weight-bold">SISWA</h1>
         </div>
 
         <!-- sweet alert -->
@@ -95,13 +95,11 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">
                 <h1>
-
                     <a href="{% url 'penilaian_create' %}"
                         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fas fa-plus fa-sm text-white-50"></i> Add Data
-                    </a>
+                            class="fas fa-plus fa-sm text-white-50"></i> Add Data</a>
         </div>
-        <!-- data penilaian -->
+        <!-- penilaian -->
         <div class="row mb-4">
             <!-- Area tabel -->
             <div class="col-xl-12 col-lg-9">
@@ -115,28 +113,32 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead class="text-center">
                                     <tr>
-                                        <th>NO</th>
-                                        <th>ALTERNATIF</th>
-                                        <th>EKSKUL</th>
-                                        <th>KRITERIA</th>
-                                        <th>BOBOT</th>
-                                        <th>NILAI</th>
-                                        <th>ACTION</th>
+                                        <th rowspan="2" class="align-middle text-center">NO</th>
+                                        <th rowspan="2" class="align-middle text-center">ALTERNATIF</th>
+                                        <th rowspan="2" class="align-middle text-center">EKSKUL</th>
+                                        <th colspan="4" class="text-center">KRITERIA</th>
+                                        <th rowspan="2" class="align-middle text-center">ACTION</th>
+                                        </tr>
+                                        <tr>
+                                            <th>C1</th>
+                                            <th>C2</th>
+                                            <th>C3</th>
+                                            <th>C4</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for data in penilaians %}
-                                    <tr style="text-transform: capitalize;">
-                                        <td class="text-center">{{ forloop.counter }}</td>
-                                        <td><a href="">{{ data.alternatif }}</a></td>
-                                        <td class="text-center">
-                                            <span class="badge bg-primary text-white"
-                                                style="padding: 4px 10px">{{data.ekskul}}</span>
+                                    <tr class="text-center">
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="text-primary font-weight-bold">{{ data.alternatif.nama }}</td>
+                                        <td>
+                                            <span class="badge bg-primary text-white" style="padding: 4px 10px">{{data.ekskul.nama }}</span>
                                         </td>
-                                        <td><a href="">{{ data.kriteria }}</a></td>
-                                        <td class="text-center"><a href="">{{ data.kriteria.bobot }}</a></td>
-                                        <td><a href="">{{ data.nilai }}</a></td>
-                                        <td class="text-center">
+                                        <td>{{ data.c1.nilai }}</td>
+                                        <td>{{ data.c2.nilai }}</td>
+                                        <td>{{ data.c3.nilai }}</td>
+                                        <td>{{ data.c4.nilai }}</td>
+                                        <td>
                                             <a href="{% url 'penilaian_update' id=data.id %}"
                                                 class="btn btn-warning btn-icon-split mb-1 ">
                                                 <span class="icon text-white-25">
@@ -144,7 +146,7 @@
                                                 </span>
                                             </a>
 
-                                            <a href="{% url 'delet_alternatif' id=data.id %}"
+                                            <a href="{% url 'penilaian_delete' id=data.id %}"
                                                 class="btn btn-danger btn-icon-split mb-1"
                                                 onclick="return confirm('yakin ingin menghapus data?')">
                                                 <span class="icon text-white-25">
@@ -157,63 +159,112 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    </div>
+                    </div>
+        </div>
+        
+        <!-- tahap 1 -->
+        <div class="row mb-4">
+            <!-- Area tabel -->
+            <div class="col-xl-12 col-lg-9">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Tahap 01 menentukan pangkat</h6>
                         </div>
-                        </div>
-                        </div>
-                        <!-- bobot -->
-                        <div class="row mb-4">
-                            <!-- Area tabel -->
-                            <div class="col-xl-12 col-lg-9">
-                                <div class="card shadow mb-UKM 4">
-                                    <!-- Card Header - Dropdown -->
-                                    <div class="card shadow">
-                                        <div class="card-header py-3">
-                                            <h6 class="m-0 font-weight-bold text-primary">Tahap 01 menentukan pangkat</h6>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead class="text-center">
+                                    <tr style="text-transform: capitalize;">
+                                        <td>KETERANGAN</td>
+                                        {% for data in bobot %}
+                                        <td class="text-center">{{ data.nama }} ({{ data.jenis }})</td>
+                                        {% endfor %}
+                                        <!-- <td>JUMLAH</td> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="">BOBOT AWAL</td>
+                                        {% for data in bobot %}
+                                        <td class="text-center">{{ data.bobot }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <td class="">HASIL BAGI</td>
+                                        {% for data in jlh_item_bobot %}
+                                        <td class="text-center">{{ data.bobot|floatformat:3 }}</td>
+                                        {% endfor %}
+                                        </tr>
+                                        <tr>
+                                        <tr>
+                                            <td class="bg-primary text-white">HASIL PANGKAT</td>
+                                            {% for nama, pangkat in hasil_pangkat.items %}
+                                            <td class="text-center">{{ pangkat }}</td>
+                                            {% endfor %}
+                                            </tr>
+                                        </tr>
+                                        </tbody>
+                                        </table>
                                         </div>
-                                        <div class="card-body table-responsive">
-                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                <thead class="text-center">
-                                                    <tr style="text-transform: capitalize;">
-                                                        <td>KETERANGAN</td>
-                                                        {% for data in bobot %}
-                                                        <td class="text-center">{{ data.nama }} ({{ data.jenis }})</td>
-                                                        {% endfor %}
-                                                        <!-- <td>JUMLAH</td> -->
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="">BOBOT AWAL</td>
-                                                        {% for data in bobot %}
-                                                        <td class="text-center">{{ data.bobot }}</td>
-                                                        {% endfor %}
-                                                        <!-- <td class="text-center font-weight-bold text-primary">{{jlh_bobot}}</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="">HASIL BAGI</td>
-                                                        {% for data in jlh_item_bobot %}
-                                                        <td class="text-center">{{ data.bobot|floatformat:4 }}</td>
-                                                        {% endfor %}
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bg-primary text-white">HASIL PANGKAT</td>
-                                                        {% for data in hasil_pangkat %}
-                                                        <td class="text-center text-primary">{{ data.pangkat|floatformat:4 }}</td>
-                                                        {% endfor %}
-                                                    </tr>
-                                                </tbody>
-                                            </table>
                                         </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <!-- penilaian -->
+                                        <div class="row mb-4">
+                                            <!-- Area tabel -->
+                                            <div class="col-xl-12 col-lg-9">
+                                                <div class="card shadow mb-UKM 4">
+                                                    <!-- Card Header - Dropdown -->
+                                                    <div class="card shadow">
+                                                        <div class="card-header py-3">
+                                                            <h6 class="m-0 font-weight-bold text-primary">Tahap 02 menentukan Vector S</h6>
+                                                        </div>
+                                                        <div class="card-body table-responsive">
+                                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                                <thead class="text-center">
+                                                                    <tr>
+                                                                        <th rowspan="2" class="align-middle text-center">NO</th>
+                                                                        <th rowspan="2" class="align-middle text-center">ALTERNATIF</th>
+                                                                        <th rowspan="2" class="align-middle text-center">EKSKUL</th>
+                                                                        <th colspan="4" class="text-center">KRITERIA</th>
+                                                                        <th rowspan="2" class="align-middle text-center bg-primary text-white">HASIL</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>C1</th>
+                                                                        <th>C2</th>
+                                                                        <th>C3</th>
+                                                                        <th>C4</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for data in tabel_penilaian %}
+                                                                    <tr class="text-center">
+                                                                        <td>{{ forloop.counter }}</td>
+                                                                        <td class="text-primary font-weight-bold">{{ data.alternatif }}</td>
+                                                                        <td>
+                                                                            <span class="badge bg-primary text-white"
+                                                                                style=" padding: 4px 10px">{{data.ekskul}}</span>
+                                                                        </td>
+                                                                        <td>{{ data.c1|floatformat:3 }}</td>
+                                                                        <td>{{ data.c2|floatformat:3 }}</td>
+                                                                        <td>{{ data.c3|floatformat:3 }}</td>
+                                                                        <td>{{ data.c4|floatformat:3 }}</td>
+                                                                        <td>{{ data.hasil|floatformat:3 }}</td>
+                                                                        
+                                                                    </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                                    </table>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
 
-                            <!-- tombol hitung -->
-                            <div class="" style="margin: 50px 0; display: flex; align-items: center; justify-content: center;">
-                                <button class="btn btn-primary font-weight-bold" style="box-shadow: 10px 10px 90px #97fe7aa5;">Hitung
-                                    Penilaian</button>
-                            </div>
-    </div>
-
-    {%endblock konten%}
-    <!-- SCRIPT -->
-    {%block script%}
-
-    {%endblock script%}
+{%endblock konten%}

@@ -34,16 +34,22 @@ class EkskulForm(forms.ModelForm):
 class PenilaianForm(forms.ModelForm):
     class Meta:
         model = Penilaian
-        fields = ['alternatif', 'ekskul', 'kriteria', 'nilai']
-        widgets = {
-            'alternatif': forms.Select(attrs={'class': 'form-control'}),
-            'ekskul': forms.Select(attrs={'class': 'form-control'}),
-            'kriteria': forms.Select(attrs={'class': 'form-control'}),
-            'nilai': forms.Select(attrs={'class': 'form-control'}),
-        }
-
+        fields = "__all__"
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['nilai'].queryset = SubKriteria.objects.all()  # Tampilkan semua subkriteria awalnya
+        super(PenilaianForm, self).__init__(*args, **kwargs)
 
-    
+        # Filter untuk kolom C1 dan menampilkan nama namun saat disimpan akan mengambil nilainya
+        self.fields['c1'].queryset = SubKriteria.objects.filter(kriteria__simbol='C1').order_by('nama')
+        self.fields['c1'].label_from_instance = lambda obj: obj.nama
+
+        # Filter untuk kolom C2 dan menampilkan nama namun saat disimpan akan mengambil nilainya
+        self.fields['c2'].queryset = SubKriteria.objects.filter(kriteria__simbol='C2').order_by('nama')
+        self.fields['c2'].label_from_instance = lambda obj: obj.nama
+
+        # Filter untuk kolom C3 dan menampilkan nama namun saat disimpan akan mengambil nilainya
+        self.fields['c3'].queryset = SubKriteria.objects.filter(kriteria__simbol='C3').order_by('nama')
+        self.fields['c3'].label_from_instance = lambda obj: obj.nama
+
+        # Filter untuk kolom C4 dan menampilkan nama namun saat disimpan akan mengambil nilainya
+        self.fields['c4'].queryset = SubKriteria.objects.filter(kriteria__simbol='C4').order_by('nama')
+        self.fields['c4'].label_from_instance = lambda obj: obj.nama

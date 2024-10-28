@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from decimal import Decimal
 
 # Create your views here.
 
@@ -225,22 +226,41 @@ def penilaian_list(request):
     kriteria_bobot = Kriteria.objects.values('nama', 'bobot','jenis')
     jlh_bobot = sum(kriteria['bobot'] for kriteria in kriteria_bobot)
     jlh_item_bobot = [{'nama': item['nama'], 'bobot': item['bobot'] / jlh_bobot, 'jenis': item['jenis']} for item in kriteria_bobot]
-    hasil_pangkat = [
-        {
-            'nama': item['nama'],
-            'jenis': item['jenis'],
-            'pangkat': item['bobot'] * (1 if item['jenis'] == 'benefit' else -1)
-        }
+    # tahap 1 mencari niali pangkat sesuia dengan jenis kriteria
+    hasil_pangkat = {
+        item['nama']: item['bobot'] * (1 if item['jenis'] == 'BENEFIT' else -1)
         for item in jlh_item_bobot
-    ]
+    }
 
-    print('data hasil pangkat =', hasil_pangkat)
+    tabel_penilaian = [
+        {
+            'no': idx + 1,
+            'alternatif': p.alternatif,
+            'ekskul': p.ekskul,
+            'c1': p.c1.nilai ** Decimal(hasil_pangkat['Minat']),
+            'c2': p.c2.nilai ** Decimal(hasil_pangkat['Prestasi']),
+            'c3': p.c3.nilai ** Decimal(hasil_pangkat['Waktu']),
+            'c4': p.c4.nilai ** Decimal(hasil_pangkat['Biaya']),
+            'hasil': (
+                (p.c1.nilai ** Decimal(hasil_pangkat['Minat'])) *
+                (p.c2.nilai ** Decimal(hasil_pangkat['Prestasi'])) *
+                (p.c3.nilai ** Decimal(hasil_pangkat['Waktu'])) *
+                (p.c4.nilai ** Decimal(hasil_pangkat['Biaya']))
+            )
+        }
+        for idx, p in enumerate(penilaians)
+    ]
+    
+
+    # -------------------------
+   
     context = {
         'penilaians': penilaians,
         'bobot': kriteria_bobot,
         'jlh_bobot': jlh_bobot,
         'jlh_item_bobot': jlh_item_bobot,
-        'hasil_pangkat': hasil_pangkat
+        'hasil_pangkat': hasil_pangkat,
+        'tabel_penilaian': tabel_penilaian,
     }
     return render(request, 'dashboard_penilaian.html', context)
 
@@ -270,10 +290,8 @@ def penilaian_update(request, id):
 @login_required
 def penilaian_delete(request, id):
     penilaian = get_object_or_404(Penilaian, id=id)
-    if request.method == 'POST':
-        penilaian.delete()
-        return redirect('penilaian_list')
-    return render(request, 'penilaian_confirm_delete.html', {'penilaian': penilaian})
+    penilaian.delete()
+    return redirect('penilaian_list')
 
 def get_subkriteria(request):
     kriteria_id = request.GET.get('kriteria_id')
