@@ -7,11 +7,11 @@
     <video class="background-video" autoplay loop muted>
         <source src="\spk_ekskul_project\static\video\cyber.mp4" type="video/mp4">
     </video>
-    <img src="\spk_ekskul_project\static\bgr (1).png" alt="spk">
+    <img src="D:\CODE\PYTHON\spk_ekskul_project\static\bgr1.png" alt="spk">
     <br>
-    <img src="\spk_ekskul_project\static\bgr (2).png" alt="spk">
+    <img src="\spk_ekskul_project\static\bgr2.png" alt="spk">
     <br>
-    <img src="\spk_ekskul_project\static\bgr (3).png" alt="spk">
+    <img src="\spk_ekskul_project\static\bgr3.png" alt="spk">
     <br>
 </div>
 
