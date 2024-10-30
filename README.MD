@@ -4,9 +4,12 @@
     <h1>SPK Pemilihan Kegiatan Ekskul</h1>
     <span>✨⭐⭐⭐✨</span>
     <hr>
-    ![SPK Background 1](./static/bgr1.png)
-    ![SPK Background 1](./static/bgr2.png)
-    ![SPK Background 1](./static/bgr3.png)
+    <img src="/static/bgr1.png" alt="store">
+    <br>
+    <img src="/static/bgr2.png" alt="spk">
+    <br>
+    <img src="/static/bgr3.png" alt="spk">
+    <br>
 </div>
 
 ## Setup Project
@@ -15,7 +18,7 @@
 - 📍&nbsp;&nbsp;[Install Python (Python Official)](https://www.python.org/)
 - 📗&nbsp;&nbsp;Clone repository
 ```bash
-git clone https://github.com/ENONGLOSKER/
+git clone https://github.com/ENONGLOSKER/PJ-SPK-EKSKUL
 ```
 - 📁&nbsp;&nbsp;Masuk ke Folder
 ```bash
