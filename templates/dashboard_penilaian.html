@@ -164,7 +164,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
         </div>
 
         <!-- tahap 1 -->
@@ -209,13 +209,13 @@
                                         {% endfor %}
                                     </tr>
                                     </tr>
-                                    </tbody>
-                                    </table>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    </div>
+                                </tbody>
+                                </table>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
         <!-- tahap 2 -->
         <div class="row mb-4">
             <!-- Area tabel -->
@@ -236,30 +236,80 @@
                                         <th colspan="4" class="text-center">KRITERIA</th>
                                         <th rowspan="2" class="align-middle text-center bg-primary text-white">HASIL
                                         </th>
-                                        </tr>
-                                        <tr>
-                                            <th>C1</th>
-                                            <th>C2</th>
-                                            <th>C3</th>
-                                            <th>C4</th>
+                                    </tr>
+                                    <tr>
+                                        <th>C1</th>
+                                        <th>C2</th>
+                                        <th>C3</th>
+                                        <th>C4</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in tabel_penilaian %}
+                                        <tr class="text-center">
+                                            <td>{{ forloop.counter }}</td>
+                                            <td class="text-primary font-weight-bold">{{ data.alternatif }}</td>
+                                            <td>
+                                                <span class="badge bg-primary text-white" style=" padding: 4px 10px">{{data.ekskul}}</span>
+                                            </td>
+                                            <td>{{ data.c1|floatformat:3 }}</td>
+                                            <td>{{ data.c2|floatformat:3 }}</td>
+                                            <td>{{ data.c3|floatformat:3 }}</td>
+                                            <td>{{ data.c4|floatformat:3 }}</td>
+                                            <td>{{ data.hasil|floatformat:3 }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    </table>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    
+                                    <!-- tahap 3 -->
+                                    <div class="row mb-4">
+                                        <!-- Area tabel -->
+                                        <div class="col-xl-12 col-lg-9">
+                                            <div class="card shadow mb-UKM 4">
+                                                <!-- Card Header - Dropdown -->
+                                                <div class="card shadow">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Tahap 03 menentukan Vector V</h6>
+                                                    </div>
+                                                    <div class="card-body table-responsive">
+                                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                            <thead class="text-center">
+                                                                <tr>
+                                                                    <th rowspan="2" class="align-middle text-center">NO</th>
+                                                                    <th rowspan="2" class="align-middle text-center">ALTERNATIF</th>
+                                                                    <th rowspan="2" class="align-middle text-center">EKSKUL</th>
+                                        <th rowspan="2" class="align-middle text-center">HASIL</th>
+                                        <th rowspan="2" class="align-middle text-center">REKOMENDASI</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            {% for data in tabel_penilaian %}
-                                            <tr class="text-center">
-                                                <td>{{ forloop.counter }}</td>
-                                                <td class="text-primary font-weight-bold">{{ data.alternatif }}</td>
-                                                <td>
-                                                    <span class="badge bg-primary text-white" style=" padding: 4px 10px">{{data.ekskul}}</span>
-                                                </td>
-                                                <td>{{ data.c1|floatformat:3 }}</td>
-                                                <td>{{ data.c2|floatformat:3 }}</td>
-                                                <td>{{ data.c3|floatformat:3 }}</td>
-                                                <td>{{ data.c4|floatformat:3 }}</td>
-                                                <td>{{ data.hasil|floatformat:3 }}</td>
-                                        
-                                            </tr>
-                                            {% endfor %}
+                                    {% for item in penilaian_data %}
+                                    <tr class="{{ item.background_color}} {{item.text_color}}">
+                                        <td class="text-center">{{ item.no }}</td>
+                                        <td class="text-center">{{ item.alternatif }}</td>
+                                        <td class="text-center">
+                                            {{ item.ekskul }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ item.hasil|floatformat:2 }}
+                                        </td>
+                                        <td class="text-center {% if item.rekomendasi == 'Direkomendasikan' %} bg-warning text-white{% endif %}">
+                                            {% if item.rekomendasi == 'Direkomendasikan' %}
+                                            {{ item.rekomendasi }}
+                                            <ion-icon name="checkmark-circle"
+                                                style="width: 28px; height: 28px; color: #70a830; transform: translateY(5px);"></ion-icon>
+                                            {% else %}
+                                            {{ item.rekomendasi }}
+                                            {% endif %}
+                                        </td>
+                                        </tr>
+                                        {% endfor %}
                                         </tbody>
                                         </table>
                                         </div>
@@ -267,61 +317,8 @@
                                         </div>
                                         </div>
                                         </div>
-                                        
-                                        <!-- tahap 3 -->
-                                        <div class="row mb-4">
-                                            <!-- Area tabel -->
-                                            <div class="col-xl-12 col-lg-9">
-                                                <div class="card shadow mb-UKM 4">
-                                                    <!-- Card Header - Dropdown -->
-                                                    <div class="card shadow">
-                                                        <div class="card-header py-3">
-                                                            <h6 class="m-0 font-weight-bold text-primary">Tahap 03 menentukan Vector V</h6>
-                                                        </div>
-                                                        <div class="card-body table-responsive">
-                                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                                <thead class="text-center">
-                                                                    <tr>
-                                                                        <th rowspan="2" class="align-middle text-center">NO</th>
-                                                                        <th rowspan="2" class="align-middle text-center">ALTERNATIF</th>
-                                                                        <th rowspan="2" class="align-middle text-center">EKSKUL</th>
-                                                                        <th colspan="4" class="text-center">KRITERIA</th>
-                                                                        <th rowspan="2" class="align-middle text-center bg-primary text-white">HASIL
-                                                                        </th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>C1</th>
-                                                                        <th>C2</th>
-                                                                        <th>C3</th>
-                                                                        <th>C4</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {% for data in tabel_penilaian %}
-                                                                    <tr class="text-center">
-                                                                        <td>{{ forloop.counter }}</td>
-                                                                        <td class="text-primary font-weight-bold">{{ data.alternatif }}</td>
-                                                                        <td>
-                                                                            <span class="badge bg-primary text-white"
-                                                                                style=" padding: 4px 10px">{{data.ekskul}}</span>
-                                                                        </td>
-                                                                        <td>{{ data.c1|floatformat:3 }}</td>
-                                                                        <td>{{ data.c2|floatformat:3 }}</td>
-                                                                        <td>{{ data.c3|floatformat:3 }}</td>
-                                                                        <td>{{ data.c4|floatformat:3 }}</td>
-                                                                        <td>{{ data.hasil|floatformat:3 }}</td>
-                                        
-                                                                    </tr>
-                                                                    {% endfor %}
-                                                                </tbody>
-                                                                </table>
-                                                                </div>
-                                                                </div>
-                                                                </div>
-                                                                </div>
-                                                                </div>
 
     </div>
-    </div>
+</div>
 
 {%endblock konten%}

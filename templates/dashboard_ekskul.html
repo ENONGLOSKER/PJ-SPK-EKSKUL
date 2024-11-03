@@ -11,7 +11,7 @@
         </button>
 
         <div class="">
-            <h1 class="h3 mb-0 text-gray-800 font-weight-bold">SISWA</h1>
+            <h1 class="h3 mb-0 text-gray-800 font-weight-bold">DATA EKSKUL</h1>
         </div>
 
         <!-- sweet alert -->
@@ -109,7 +109,7 @@
                     <!-- Card Header - Dropdown -->
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Siswa</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Data Ekskul</h6>
                         </div>
                         <div class="card-body table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -126,8 +126,7 @@
                                     <tr style="text-transform: capitalize;">
                                         <td class="text-center">{{forloop.counter}}</td>
                                         <td class="text-center">
-                                            <span class="badge bg-primary text-white"
-                                                style="padding: 4px 10px">{{data.nama}}</span>
+                                            {{data.nama}}
                                         </td>
                                         <td class="text-center">
                                             <a href="{% url 'ekskul_update' id=data.id %}"

@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
+from collections import defaultdict
+from decimal import Decimal
 
 # Create your views here.
 
@@ -27,7 +29,7 @@ def sigin_form(request):
         if user is not None:
             login(request, user)
             messages.success(request, f"Sign in Berhasil, Selamat datang {user}")
-            return redirect('dsb_alternatif')
+            return redirect('penilaian_list')
         else:
             messages.error(request, "Sign in Gagal, Silahkan coba kembali!")
             return redirect('index')
@@ -223,12 +225,13 @@ def ekskul_delete(request, id):
 @login_required
 def penilaian_list(request):
     penilaians = Penilaian.objects.all()
-    kriteria_bobot = Kriteria.objects.values('nama', 'bobot','jenis')
+    kriteria_bobot = Kriteria.objects.values('nama', 'bobot', 'jenis')
     jlh_bobot = sum(kriteria['bobot'] for kriteria in kriteria_bobot)
-    jlh_item_bobot = [{'nama': item['nama'], 'bobot': item['bobot'] / jlh_bobot, 'jenis': item['jenis']} for item in kriteria_bobot]
-    # tahap 1 mencari niali pangkat sesuia dengan jenis kriteria
+    jlh_item_bobot = [{'index': idx, 'bobot': item['bobot'] / jlh_bobot, 'jenis': item['jenis']} for idx, item in enumerate(kriteria_bobot)]
+
+    # Tahap 1: Mencari nilai pangkat sesuai dengan jenis kriteria
     hasil_pangkat = {
-        item['nama']: item['bobot'] * (1 if item['jenis'] == 'BENEFIT' else -1)
+        item['index']: item['bobot'] * (1 if item['jenis'] == 'BENEFIT' else -1)
         for item in jlh_item_bobot
     }
 
@@ -237,23 +240,73 @@ def penilaian_list(request):
             'no': idx + 1,
             'alternatif': p.alternatif,
             'ekskul': p.ekskul,
-            'c1': p.c1.nilai ** Decimal(hasil_pangkat['Minat']),
-            'c2': p.c2.nilai ** Decimal(hasil_pangkat['Prestasi']),
-            'c3': p.c3.nilai ** Decimal(hasil_pangkat['Waktu']),
-            'c4': p.c4.nilai ** Decimal(hasil_pangkat['Biaya']),
+            'c1': p.c1.nilai ** Decimal(hasil_pangkat[0]),  # Assuming 'Minat' is the first criteria
+            'c2': p.c2.nilai ** Decimal(hasil_pangkat[1]),  # Assuming 'Prestasi' is the second criteria
+            'c3': p.c3.nilai ** Decimal(hasil_pangkat[2]),  # Assuming 'Waktu' is the third criteria
+            'c4': p.c4.nilai ** Decimal(hasil_pangkat[3]),  # Assuming 'Biaya' is the fourth criteria
             'hasil': (
-                (p.c1.nilai ** Decimal(hasil_pangkat['Minat'])) *
-                (p.c2.nilai ** Decimal(hasil_pangkat['Prestasi'])) *
-                (p.c3.nilai ** Decimal(hasil_pangkat['Waktu'])) *
-                (p.c4.nilai ** Decimal(hasil_pangkat['Biaya']))
+                (p.c1.nilai ** Decimal(hasil_pangkat[0])) *
+                (p.c2.nilai ** Decimal(hasil_pangkat[1])) *
+                (p.c3.nilai ** Decimal(hasil_pangkat[2])) *
+                (p.c4.nilai ** Decimal(hasil_pangkat[3]))
             )
         }
         for idx, p in enumerate(penilaians)
     ]
-    
 
-    # -------------------------
-   
+    # Tahap 2: Mengelompokkan dan menjumlahkan hasil per alternatif
+    total_per_alternatif = defaultdict(Decimal)
+    for item in tabel_penilaian:
+        total_per_alternatif[item['alternatif']] += item['hasil']
+
+    # Mengumpulkan data dalam variabel penilaian_data
+    penilaian_data = []
+    previous_alternatif = None  # Variabel untuk menyimpan alternatif sebelumnya
+    is_first_row = True  # Flag untuk menandai baris pertama
+
+    for idx, item in enumerate(tabel_penilaian):
+        hasil_per_alternatif = item['hasil'] / total_per_alternatif[item['alternatif']]
+        
+        # Logika untuk menentukan background dan warna text
+        if item['alternatif'] != previous_alternatif:
+            background_color = 'bg-primary'  # Warna background untuk alternatif pertama
+            text_color = 'text-white'  # Warna text untuk data pertama berdasarkan alternatifnya
+            is_first_row = True  # Reset flag untuk baris pertama
+        else:
+            background_color = ''  # Tidak ada warna untuk baris berikutnya
+            text_color = ''  # Tidak ada warna text untuk baris berikutnya
+            is_first_row = False
+
+        penilaian_data.append({
+            'no': idx + 1,
+            'alternatif': item['alternatif'],
+            'ekskul': item['ekskul'],
+            'hasil': hasil_per_alternatif,
+            'rekomendasi': None,  # Placeholder untuk rekomendasi
+            'background_color': background_color,  # Menyimpan warna background
+            'text_color': text_color,  # Menyimpan warna text
+        })
+
+        # Update alternatif sebelumnya
+        previous_alternatif = item['alternatif']
+
+    # Menentukan rekomendasi per alternatif
+    rekomendasi_per_alternatif = defaultdict(lambda: {'hasil': Decimal('-Infinity'), 'idx': None})
+
+    # Mencari nilai hasil tertinggi untuk setiap alternatif
+    for idx, item in enumerate(penilaian_data):
+        alternatif = item['alternatif']
+        if item['hasil'] > rekomendasi_per_alternatif[alternatif]['hasil']:
+            rekomendasi_per_alternatif[alternatif] = {'hasil': item['hasil'], 'idx': idx}
+
+    # Menambahkan kolom rekomendasi
+    for idx, item in enumerate(penilaian_data):
+        if idx == rekomendasi_per_alternatif[item['alternatif']]['idx']:
+            item['rekomendasi'] = "Direkomendasikan"
+        else:
+            item['rekomendasi'] = "Tidak Direkomendasikan"
+
+
     context = {
         'penilaians': penilaians,
         'bobot': kriteria_bobot,
@@ -261,6 +314,7 @@ def penilaian_list(request):
         'jlh_item_bobot': jlh_item_bobot,
         'hasil_pangkat': hasil_pangkat,
         'tabel_penilaian': tabel_penilaian,
+        'penilaian_data': penilaian_data,
     }
     return render(request, 'dashboard_penilaian.html', context)
 

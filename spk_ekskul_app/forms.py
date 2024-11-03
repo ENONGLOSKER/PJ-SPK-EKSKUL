@@ -18,6 +18,7 @@ class KriteriaForm(forms.ModelForm):
         widgets = {
             'simbol':forms.TextInput(attrs={'class':'form-control'}),
             'nama':forms.TextInput(attrs={'class':'form-control'}),
+            'bobot':forms.TextInput(attrs={'class':'form-control'}),
             'jenis':forms.Select(attrs={'class':'form-control'}),
         }
 
@@ -26,15 +27,35 @@ class SubKriteriaForm(forms.ModelForm):
         model = SubKriteria
         fields = ['kriteria', 'nama', 'nilai']
 
+        widgets = {
+            'kriteria': forms.Select(attrs={'class': 'form-control'}),
+            'nama': forms.TextInput(attrs={'class': 'form-control'}),
+            'nilai': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
 class EkskulForm(forms.ModelForm):
     class Meta:
         model = Ekskul
         fields = ['nama']
+
+        widgets = {
+            'nama': forms.TextInput(attrs={'class': 'form-control'}),
+        }
         
 class PenilaianForm(forms.ModelForm):
     class Meta:
         model = Penilaian
         fields = "__all__"
+
+        widgets = {
+            'alternatif': forms.Select(attrs={'class': 'form-control'}),
+            'ekskul': forms.Select(attrs={'class': 'form-control'}),
+            'c1': forms.Select(attrs={'class': 'form-control'}),
+            'c2': forms.Select(attrs={'class': 'form-control'}),
+            'c3': forms.Select(attrs={'class': 'form-control'}),
+            'c4': forms.Select(attrs={'class': 'form-control'}),
+        }
+        
     def __init__(self, *args, **kwargs):
         super(PenilaianForm, self).__init__(*args, **kwargs)
 
